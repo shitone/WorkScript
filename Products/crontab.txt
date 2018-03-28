@@ -1,0 +1,1 @@
+15,30 * * * * python pre1h_job.py
