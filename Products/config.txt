@@ -5,13 +5,18 @@ User = xxzxftp
 PassWord = 123456
 
 [PathConfig]
-BACKUP_PATH = D:\PycharmProjects\WorkScript\Products\backup
-FAILED_PATH = D:\PycharmProjects\WorkScript\Products\failed
-SOURCE_PATH = D:\PycharmProjects\WorkScript\Products\source
-MAPDATA_PATH = D:\PycharmProjects\WorkScript\Products\mapdata
+BACKUP_PATH = backup
+FAILED_PATH = failed
+SOURCE_PATH = source
+MAPDATA_PATH = mapdata
 
 [DrawConfig]
 #PRE1H
 PRE_1H_LEVELS = [0.01,2,4,6,8,10,20,50,200]
 PRE_1H_COLORS = ['#9CF790','#37A600','#67B4F8','#0002FE','#03714E','#FA03F0','#DE5000', '#710100']
 PRE_1H_UNIT = 'mm'
+
+#TEM1H
+TEM_1H_LEVELS = [-20,-10,-5,-2,0,5,8,10,12,14,16,18,20,22,25,28,30,33,35,38,40]
+TEM_1H_COLORS = ['#0000FF','#0085FF','#00EBFF','#00FF52','#00FF52','#31FF00','#52FF00','#73FF00','#94FF00','#B5FF00','#DEFF00','#FFFF00','#FFE700','#FFC300','#FF8200','#FF6100','#FF4100','#FF2C00','#FF2000','#FF1400','#FF0000']
+TEM_1H_UNIT = '°„C'
