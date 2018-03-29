@@ -42,7 +42,7 @@ def scala_net_grid(x, y, z, g, interp):
 
 def get_upload_path_from_file(file_name):
     file_list = str.split(file_name, '_')
-    pathstr = ''
+    pathstr = '~/'
     for child_path in file_list:
         if re.search(r'(\d{14})', child_path):
             break

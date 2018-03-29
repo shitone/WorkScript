@@ -26,17 +26,18 @@ def _job(now):
     x, y, z = puntil.scala_net_grid(x, y, z, [50, 50], 'linear')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.read('config.txt')
-    drawmap = DrawMap(levels=list(eval(config.get('DrawConfig', 'PRE_1H_LEVELS'))),
-                        colors=list(eval(config.get('DrawConfig', 'PRE_1H_COLORS'))),
-                        unit=config.get('DrawConfig', 'PRE_1H_UNIT'),
-                        titles=[{"title":title1, "loc":u"left"},
-                                {"title":title2, "loc":u"right"}],
-                        statistics=[u"极大值："+ str(maxpre) +"mm",
-                                 u"极小值："+ str(minpre) + "mm"],
-                        save_name=os.path.join(config.get('PathConfig', 'SOURCE_PATH'), fn))
+    drawmap = DrawMap(levels=list(eval(config.get('Draw', 'PRE_1H_LEVELS'))),
+                    colors=list(eval(config.get('Draw', 'PRE_1H_COLORS'))),
+                    cheight="25%",
+                    unit=config.get('Draw', 'PRE_1H_UNIT'),
+                    titles=[{"title":title1, "loc":u"left"},
+                            {"title":title2, "loc":u"right"}],
+                    statistics=[u"极大值："+ str(maxpre) +"mm",
+                                u"极小值："+ str(minpre) + "mm"],
+                    save_name=os.path.join(config.get('Path', 'SOURCE_PATH'), fn))
     drawmap.draw_scala_map(x, y, z)
     is_success = False
-    pftp = ProductFTP(ip=config.get('FTPConfig', 'IP'), port=config.getint('FTPConfig', 'Port'), user=config.get('FTPConfig', 'User'), pwd=config.get('FTPConfig', 'PassWord'))
+    pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'), pwd=config.get('FTP', 'PassWord'))
     if pftp.connect():
         for fn in os.listdir('source'):
             tmp_path = os.path.join('source', fn)

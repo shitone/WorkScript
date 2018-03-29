@@ -19,15 +19,17 @@ class DrawMap(object):
     """
     'levels': 等值线分级值，浮点型数组，如小时雨量可以赋值[0.01,2,4,6,8,10,20,50,200]，0.01到2之间是一个等级.
     'colors': 等值线每一级颜色，字符型数组，如小时雨量可以赋值['#9CF790','#37A600','#67B4F8','#0002FE','#03714E','#FA03F0','#DE5000', '#710100'].
+    'cheight': 颜色条的长度占比，浮点型， 如0.75,0.25.
     'unit': 数据单位，字符串，如雨量可以赋值"mm",温度可以赋值"°C".
     'titles'：标题内容，字典数组，如[{"title":"江西省逐小时降水3月14日19时-20时", "loc":"left"},{"title":"2018年03月14日20时制作", "loc":"right"}],
                 其中loc标识标题的方位，可以取值"left","right","center".
     'statistics': 统计信息，字符数组，["极大值：5mm","极小值：0mm"],一个字符一行.
     'save_name': 产品文件保存路径，如"E:\\ex.png"或者"filepath\\ex.png"
     """
-    def __init__(self, levels, colors, unit, titles, statistics, save_name):
+    def __init__(self, levels, colors, cheight, unit, titles, statistics, save_name):
         self.levels = levels
         self.colors = colors
+        self.cheight = cheight
         self.unit = unit
         self.titles = titles
         self.statistics= statistics
@@ -55,7 +57,7 @@ class DrawMap(object):
         #设置colorbar
         axins = inset_axes(ax,
                            width="1.2%",
-                           height="25%",
+                           height=self.cheight,
                            loc=4,
                            borderpad=5)
 
@@ -68,14 +70,15 @@ class DrawMap(object):
         mapcities=['jiangxi_all']
         mapconties=['jx_xianjie']
         for cityname in mapcities:
-            adm1_shapes = list(shpreader.Reader(os.path.join(config.get('PathConfig', 'MAPDATA_PATH'), cityname+".shp")).geometries())
+            adm1_shapes = list(shpreader.Reader(os.path.join(config.get('Path', 'MAPDATA_PATH'), cityname+".shp")).geometries())
             ax.add_geometries(adm1_shapes, ccrs.PlateCarree(),
                               edgecolor='black', facecolor='', alpha=0.4)
         for cityname in mapconties:
-            adm1_shapes = list(shpreader.Reader(os.path.join(config.get('PathConfig', 'MAPDATA_PATH'), cityname+".shp")).geometries())
+            adm1_shapes = list(shpreader.Reader(os.path.join(config.get('Path', 'MAPDATA_PATH'), cityname+".shp")).geometries())
             ax.add_geometries(adm1_shapes, ccrs.PlateCarree(),
                               edgecolor='black', facecolor='', alpha=0.2)
 
+        #使用边界切出边界包围的部分
         sjz = shp.Reader("mapdata\\jx_outer.shp")
         vertices = []
         codes = []
@@ -148,7 +151,7 @@ class DrawMap(object):
 
 
         #地市名
-        with open(os.path.join(config.get('PathConfig', 'MAPDATA_PATH'), "CityLL.json"),'r') as json_file:
+        with open(os.path.join(config.get('Path', 'MAPDATA_PATH'), "CityLL.json"),'r') as json_file:
             citylls=json.load(json_file)
             for cll in citylls:
                 clon = float(cll["Lon"])

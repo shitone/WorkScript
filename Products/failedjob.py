@@ -8,8 +8,6 @@ import ConfigParser
 
 
 def _failed_job():
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
-    config.read('config.txt')
     pftp = ProductFTP(ip="10.116.32.113", port=21, user="xxzxftp", pwd="123456", timeout=5)
     if pftp.connect():
         for fn in os.listdir('failed'):
