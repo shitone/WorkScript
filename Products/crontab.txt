@@ -1,1 +1,4 @@
 15,30 * * * * python pre1h_job.py
+16,31 * * * * python tem1h_job.py
+16,31 * * * * python tem1hmax_job.py
+16,31 * * * * python tem1hmin_job.py

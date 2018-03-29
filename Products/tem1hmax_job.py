@@ -17,13 +17,13 @@ plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
 def _job(now):
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省小时气温' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')  #修改相应标题
+    title1 = u'江西省小时最高温' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')  #修改相应标题
     title2 = bjnow.strftime(u'%Y年%m月%d日%H时')+u'制作'
-    filehead="SURF_TEM_1H_"     #修改相应文件名头
+    filehead="SURF_TEM_1HMAX_"     #修改相应文件名头
     st=filehead.split("_")
     fn = filehead + timestr + ".png"
     # x, y, z = cimissdata.get_jx_pre_1h(timestr)
-    x, y, z = cimissdata.get_jx_1h('TEM',timestr)  #修改函数参数type值'??'
+    x, y, z = cimissdata.get_jx_1h('TEM_MAX',timestr)
     maxtem = max(z)
     mintem = min(z)
     x, y, z = puntil.scala_net_grid(x, y, z, [50, 50], 'linear')

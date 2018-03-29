@@ -39,15 +39,23 @@ def _get_cimiss_data_json(type, timestr):
                   "&eleValueRanges=Q_PRE_1h:0,3,4"
 
     elif type=='TEM':
-        baseUrl += "&interfaceId=getSurfEleInRectByTime" \
+        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
                   "&dataCode=SURF_CHN_MUL_HOR" \
                   "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,TEM" \
-                  "&times=" + timestr + \
-                  "&minLat=24.2811" \
-                  "&minLon=112.53" \
-                  "&maxLat=30.4333" \
-                  "&maxLon=119.9297" \
-                  "&eleValueRanges=TEM:(-25,50)"
+                  "&times=" + timestr + "&adminCodes=360000" \
+                  "&eleValueRanges=Q_TEM:0,3,4"
+    elif type=='TEM_MAX':
+        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
+                  "&dataCode=SURF_CHN_MUL_HOR" \
+                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,TEM_MAX" \
+                  "&times=" + timestr + "&adminCodes=360000" \
+                  "&eleValueRanges=Q_TEM_MAX:0,3,4"
+    elif type=='TEM_MIN':
+        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
+                  "&dataCode=SURF_CHN_MUL_HOR" \
+                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,TEM_MIN" \
+                  "&times=" + timestr + "&adminCodes=360000" \
+                  "&eleValueRanges=Q_TEM_MIN:0,3,4"
 
     baseUrl += "&dataFormat=json"
 
