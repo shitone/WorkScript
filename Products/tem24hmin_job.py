@@ -17,15 +17,13 @@ plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
 def _job(now):
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省小时气温' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')  #修改相应标题
+    title1 = u'江西省日平均温度' + (bjnow-datetime.timedelta(hours=24)).strftime(u'%m月%d日')
     title2 = bjnow.strftime(u'%Y年%m月%d日%H时')+u'制作'
-    filehead="SURF_TEM_1H_"     #修改相应文件名头
-    st=filehead.split("_")
-    fn = filehead + timestr + ".png"
+    fn = "SURF_TEM_24HMIN_" + timestr + ".png"
     # x, y, z = cimissdata.get_jx_pre_1h(timestr)
-    x, y, z = cimissdata.get_jx_1h('TEM',timestr)  #修改函数参数type值'??'
-    maxtem = max(z)
-    mintem = min(z)
+    x, y, z = cimissdata.get_jx_multi_h(24, 'TEM_Min', timestr)
+    maxtem = round(max(z), 2)
+    mintem = round(min(z), 2)
     x, y, z = puntil.scala_net_grid(x, y, z, [50, 50], 'linear')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.read('config.txt')
@@ -42,13 +40,13 @@ def _job(now):
     is_success = False
     pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'), pwd=config.get('FTP', 'PassWord'))
     if pftp.connect():
-       if pftp.upload(upload_path=st[0]+'/'+st[1]+'/'+st[2]+'/', local_path=config.get('Path', 'SOURCE_PATH'), upload_file=fn):
+       if pftp.upload(upload_path='SURF/TEM/24HMIN/', local_path='source', upload_file=fn):
           is_success = True
        pftp.dis_connect()
     if is_success:
-        os.remove(os.path.join(config.get('Path', 'SOURCE_PATH'), fn))
+        os.remove(os.path.join('source', fn))
     else:
-        puntil.force_move_file(config.get('Path', 'SOURCE_PATH'), 'failed', fn)
+        puntil.force_move_file('source', 'failed', fn)
 
 
 if __name__ == '__main__' :
@@ -56,5 +54,3 @@ if __name__ == '__main__' :
     if len(sys.argv) > 1:
         now = datetime.datetime.strptime(sys.argv[1], '%Y%m%d%H0000')
     _job(now)
-
-

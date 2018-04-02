@@ -17,26 +17,26 @@ plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
 def _job(now):
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省小时气温' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')  #修改相应标题
+    title1 = u'江西省最小相对湿度' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')  #修改相应标题
     title2 = bjnow.strftime(u'%Y年%m月%d日%H时')+u'制作'
-    filehead="SURF_TEM_1H_"     #修改相应文件名头
+    filehead="SURF_RHU_MIN_"     #修改相应文件名头
     st=filehead.split("_")
     fn = filehead + timestr + ".png"
     # x, y, z = cimissdata.get_jx_pre_1h(timestr)
-    x, y, z = cimissdata.get_jx_1h('TEM',timestr)  #修改函数参数type值'??'
+    x, y, z = cimissdata.get_jx_1h('RHU_Min',timestr)#修改''里的内容
     maxtem = max(z)
     mintem = min(z)
     x, y, z = puntil.scala_net_grid(x, y, z, [50, 50], 'linear')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.read('config.txt')
-    drawmap = DrawMap(levels=list(eval(config.get('Draw', 'TEM_LEVELS'))),
-                    colors=list(eval(config.get('Draw', 'TEM_COLORS'))),
+    drawmap = DrawMap(levels=list(eval(config.get('Draw', 'RHU_LEVELS'))),
+                    colors=list(eval(config.get('Draw', 'RHU_COLORS'))),
                     cheight="40%",
-                    unit=config.get('Draw', 'TEM_UNIT'),
+                    unit=config.get('Draw', 'RHU_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
-                    statistics=[u"极大值："+ str(maxtem) +"°C",
-                             u"极小值："+ str(mintem) + "°C"],
+                    statistics=[u"极大值："+ str(maxtem) +"%",
+                             u"极小值："+ str(mintem) + "%"],
                     save_name=os.path.join(config.get('Path', 'SOURCE_PATH'), fn))
     drawmap.draw_scala_map(x, y, z)
     is_success = False

@@ -27,10 +27,10 @@ def _job(now):
     x, y, z = puntil.scala_net_grid(x, y, z, [50, 50], 'linear')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.read('config.txt')
-    drawmap = DrawMap(levels=list(eval(config.get('Draw', 'TEM_1H_LEVELS'))),
-                    colors=list(eval(config.get('Draw', 'TEM_1H_COLORS'))),
+    drawmap = DrawMap(levels=list(eval(config.get('Draw', 'TEM_LEVELS'))),
+                    colors=list(eval(config.get('Draw', 'TEM_COLORS'))),
                     cheight="40%",
-                    unit=config.get('Draw', 'TEM_1H_UNIT'),
+                    unit=config.get('Draw', 'TEM_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
                     statistics=[u"极大值："+ str(maxtem) +"°C",
