@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import sys
+import matplotlib
+matplotlib.use('Agg')
+import sys,re
 import plib.cimissdata as cimissdata
 import matplotlib.pyplot as plt
 from plib.jxmicmap import DrawMap
@@ -53,8 +55,11 @@ def _job(now):
 
 if __name__ == '__main__' :
     now = datetime.datetime.utcnow()
-    if len(sys.argv) > 1:
-        now = datetime.datetime.strptime(sys.argv[1], '%Y%m%d%H0000')
+    if len(sys.argv) == 2:
+        if re.match(r'^(\w{14})$', sys.argv[1]):
+            now = datetime.datetime.strptime(sys.argv[1], '%Y%m%d%H0000')
+        elif os.path.isabs(sys.argv[1]):
+            os.chdir(sys.argv[1])
     _job(now)
 
 
