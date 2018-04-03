@@ -60,10 +60,9 @@ def get_jx_1h(type, timestr):
 
 
 def _get_cimiss_data_json(type, timestr):
-    abspath = os.path.abspath('.')
     data_json = []
     cf = ConfigParser.RawConfigParser(allow_no_value=True)
-    cf.read(os.path.join(abspath, 'config.txt'))
+    cf.read( 'config.txt')
     baseUrl="http://" + cf.get('CIMISS', 'IP') + "/cimiss-web/api?userId=" + cf.get('CIMISS', 'User') + "&pwd=" + cf.get('CIMISS', 'PassWord')
 
     if type=='PRE_1h':

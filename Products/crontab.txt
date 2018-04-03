@@ -1,8 +1,9 @@
-15,30 * * * * python /opt/products/pre1h_job.py
-15,30 * * * * python /opt/products/pre3h_job.py
-15,30 * * * * python /opt/products/pre6h_job.py
-15,30 * * * * python /opt/products/pre12h_job.py
-15,30 * * * * python /opt/products/pre24h_job.py
-16,31 * * * * python /opt/products/tem1h_job.py
-16,31 * * * * python /opt/products/tem1hmax_job.py
-16,31 * * * * python /opt/products/tem1hmin_job.py
+5 * * * * python /opt/Products/failedjob.py /opt/Products
+15,30 * * * * python /opt/Products/pre1h_job.py /opt/Products
+15,30 * * * * python /opt/Products/pre3h_job.py /opt/Products
+15,30 * * * * python /opt/Products/pre6h_job.py /opt/Products
+15,30 * * * * python /opt/Products/pre12h_job.py /opt/Products
+15,30 * * * * python /opt/Products/pre24h_job.py /opt/Products
+16,31 * * * * python /opt/Products/tem1h_job.py /opt/Products
+16,31 * * * * python /opt/Products/tem1hmax_job.py /opt/Products
+16,31 * * * * python /opt/Products/tem1hmin_job.py /opt/Products
