@@ -7,3 +7,12 @@
 16,31 * * * * python /opt/Products/tem1h_job.py /opt/Products
 16,31 * * * * python /opt/Products/tem1hmax_job.py /opt/Products
 16,31 * * * * python /opt/Products/tem1hmin_job.py /opt/Products
+16,31 * * * * python /opt/Products/tem24h_job.py /opt/Products
+16,31 * * * * python /opt/Products/tem24hmax_job.py /opt/Products
+16,31 * * * * python /opt/Products/tem24hmin_job.py /opt/Products
+17,32 * * * * python /opt/Products/rhu_job.py /opt/Products
+17,32 * * * * python /opt/Products/rhumin_job.py /opt/Products
+17,32 * * * * python /opt/Products/prs_job.py /opt/Products
+17,32 * * * * python /opt/Products/prsmax_job.py /opt/Products
+17,32 * * * * python /opt/Products/prsmin_job.py /opt/Products
+17,32 * * * * python /opt/Products/prssea_job.py /opt/Products
