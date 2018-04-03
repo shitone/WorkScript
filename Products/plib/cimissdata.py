@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import urllib, json, ConfigParser, socket, datetime
+import urllib, json, ConfigParser, socket, datetime, os
 
 
 def get_jx_multi_h(hrs, type1h, timestr):
@@ -60,9 +60,10 @@ def get_jx_1h(type, timestr):
 
 
 def _get_cimiss_data_json(type, timestr):
+    abspath = os.path.abspath('.')
     data_json = []
     cf = ConfigParser.RawConfigParser(allow_no_value=True)
-    cf.read('config.txt')
+    cf.read(os.path.join(abspath, 'config.txt'))
     baseUrl="http://" + cf.get('CIMISS', 'IP') + "/cimiss-web/api?userId=" + cf.get('CIMISS', 'User') + "&pwd=" + cf.get('CIMISS', 'PassWord')
 
     if type=='PRE_1h':
@@ -141,3 +142,6 @@ def _get_cimiss_data_json(type, timestr):
         if len(data_json) > 0:
             break
     return data_json
+
+if __name__ == '__main__' :
+    x, y, z = get_jx_1h('PRE_1h', '20120101000000')

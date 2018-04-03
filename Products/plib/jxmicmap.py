@@ -79,7 +79,7 @@ class DrawMap(object):
                               edgecolor='black', facecolor='', alpha=0.2)
 
         #使用边界切出边界包围的部分
-        sjz = shp.Reader("mapdata\\jx_outer.shp")
+        sjz = shp.Reader(os.path.join("mapdata", "jx_outer.shp"))
         vertices = []
         codes = []
         for shape_rec in sjz.shapeRecords():

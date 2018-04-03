@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import matplotlib
+matplotlib.use('Agg')
 import sys
 import plib.cimissdata as cimissdata
 import matplotlib.pyplot as plt

@@ -10,12 +10,13 @@ User = xxzxftp
 PassWord = 123456
 
 [Path]
-BACKUP_PATH = backup
 FAILED_PATH = failed
 SOURCE_PATH = source
 MAPDATA_PATH = mapdata
 
 [Draw]
+JX_Lat_Lon = [24.48, 113.56 ,30.07, 118.47]
+
 #PRE1H
 PRE_1H_LEVELS = [0.01,2,4,6,8,10,20,50,200]
 PRE_1H_COLORS = ['#9CF790','#37A600','#67B4F8','#0002FE','#03714E','#FA03F0','#DE5000', '#710100']
