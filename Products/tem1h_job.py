@@ -33,7 +33,7 @@ def _job(now):
     config.read('config.txt')
     drawmap = DrawMap(levels=list(eval(config.get('Draw', 'TEM_LEVELS'))),
                     colors=list(eval(config.get('Draw', 'TEM_COLORS'))),
-                    cheight="40%",
+                    cheight="45%",
                     unit=config.get('Draw', 'TEM_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
