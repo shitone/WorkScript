@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import matplotlib, platform
 if platform.system() == 'Linux':
     matplotlib.use('Agg')
-import sys,re
+import sys, re
 import plib.cimissdata as cimissdata
 import matplotlib.pyplot as plt
 from plib.jxmicmap import DrawMap
@@ -18,39 +17,40 @@ plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
 
 
 def _job(now):
+    abspath = os.path.abspath('.')
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省相对湿度' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')  #修改相应标题
-    title2 = bjnow.strftime(u'%Y年%m月%d日%H时')+u'制作'
-    filehead="SURF_RHU_1H_"     #修改相应文件名头
-    st=filehead.split("_")
-    fn = filehead + timestr + ".png"
-    x, y, z = cimissdata.get_jx_1h('RHU',timestr)#修改''里的内容
-    maxtem = max(z)
-    mintem = min(z)
+    title1 = u'江西省相对湿度' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')
+    title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
+    fn = "SURF_RHU_1H_" + timestr + ".png"
+    x, y, z = cimissdata.get_jx_1h('RHU', timestr)
+    maxpre = max(z)
+    minpre = min(z)
     x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
-    config.read('config.txt')
+    config.read(os.path.join(abspath, 'config.txt'))
+    source_path = os.path.join(abspath, config.get('Path', 'SOURCE_PATH'))
+    failed_path = os.path.join(abspath, config.get('Path', 'FAILED_PATH'))
     drawmap = DrawMap(levels=list(eval(config.get('Draw', 'RHU_LEVELS'))),
                     colors=list(eval(config.get('Draw', 'RHU_COLORS'))),
-                    cheight="40%",
+                    cheight="25%",
                     unit=config.get('Draw', 'RHU_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
-                    statistics=[u"极大值："+ str(maxtem) +"%",
-                             u"极小值："+ str(mintem) + "%"],
-                    save_name=os.path.join(config.get('Path', 'SOURCE_PATH'), fn))
+                    statistics=[u"极大值："+ str(maxpre) +"%",
+                                u"极小值："+ str(minpre) + "%"],
+                    save_name=os.path.join(source_path, fn))
     drawmap.draw_scala_map(x, y, z)
     is_success = False
     pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'), pwd=config.get('FTP', 'PassWord'))
     if pftp.connect():
-       if pftp.upload(upload_path=st[0]+'/'+st[1]+'/'+st[2]+'/', local_path=config.get('Path', 'SOURCE_PATH'), upload_file=fn):
-          is_success = True
-       pftp.dis_connect()
+        if pftp.upload(upload_path='SURF/RHU/1H/', local_path=source_path, upload_file=fn):
+            is_success = True
+        pftp.dis_connect()
     if is_success:
-        os.remove(os.path.join(config.get('Path', 'SOURCE_PATH'), fn))
+        os.remove(os.path.join(source_path, fn))
     else:
-        puntil.force_move_file(config.get('Path', 'SOURCE_PATH'), 'failed', fn)
+        puntil.force_move_file(source_path, failed_path, fn)
 
 
 if __name__ == '__main__' :
