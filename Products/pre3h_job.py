@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import matplotlib
-matplotlib.use('Agg')
+import matplotlib, platform
+if platform.system() == 'Linux':
+    matplotlib.use('Agg')
 import sys, re
 import plib.cimissdata as cimissdata
 import matplotlib.pyplot as plt
@@ -24,7 +25,7 @@ def _job(now):
     x, y, z = cimissdata.get_jx_multi_h(3, 'PRE_1h', timestr)
     maxpre = max(z)
     minpre = min(z)
-    x, y, z = puntil.scala_net_grid(x, y, z, [50, 50], 'linear')
+    x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.read('config.txt')
     drawmap = DrawMap(levels=list(eval(config.get('Draw', 'PRE_3H_LEVELS'))),

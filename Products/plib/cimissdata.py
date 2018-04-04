@@ -9,7 +9,7 @@ def get_jx_multi_h(hrs, type1h, timestr):
     y=[]
     z=[]
     now = datetime.datetime.strptime(timestr, "%Y%m%d%H0000")
-    f = urllib.urlopen('http://10.116.32.88/stationinfo/index.php/Api/stationInfoLast?type=json')
+    f = urllib.urlopen('http://10.116.32.88/stationinfo/index.php/Api/stationInfoJiangXi?type=json')
     stdata = f.read()
     st = json.loads(stdata)
     st_map = {}
@@ -44,7 +44,7 @@ def get_jx_1h(type, timestr):
     x=[]
     y=[]
     z=[]
-    f = urllib.urlopen('http://10.116.32.88/stationinfo/index.php/Api/stationInfoLast?type=json')
+    f = urllib.urlopen('http://10.116.32.88/stationinfo/index.php/Api/stationInfoJiangXi?type=json')
     stdata = f.read()
     st = json.loads(stdata)
 
@@ -52,9 +52,12 @@ def get_jx_1h(type, timestr):
     for row in cdata:
         stno = row["Station_Id_C"]
         if stno in st:
-            x.append(float(st[stno]["lontiude"]))
-            y.append(float(st[stno]["lattiude"]))
-            z.append(float(row[type]))
+            xx = float(st[stno]["lontiude"])
+            yy = float(st[stno]["lattiude"])
+            if xx not in x and yy not in y:
+                x.append(xx)
+                y.append(yy)
+                z.append(float(row[type]))
 
     return x, y, z
 
@@ -70,7 +73,7 @@ def _get_cimiss_data_json(type, timestr):
                   "&dataCode=SURF_CHN_MUL_HOR" \
                   "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,PRE_1h,Q_PRE_1h" \
                   "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_PRE_1h:0,3,4"
+                  "&eleValueRanges=Q_PRE_1h:0,4"
 
     elif type=='TEM':
         baseUrl += "&interfaceId=getSurfEleInRegionByTime" \

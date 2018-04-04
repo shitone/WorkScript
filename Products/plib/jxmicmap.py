@@ -12,7 +12,7 @@ from matplotlib.patches import PathPatch
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import matplotlib.image as mpimg
 from matplotlib.offsetbox import OffsetImage, AnchoredOffsetbox, TextArea
-import json, os, ConfigParser
+import json, os, ConfigParser, platform
 
 
 class DrawMap(object):
@@ -175,3 +175,5 @@ class DrawMap(object):
                             verticalalignment='top', horizontalalignment='center',
                             transform=ccrs.PlateCarree())
         plt.savefig(self.save_name)
+        if platform.system() == 'Windows':
+            plt.show()

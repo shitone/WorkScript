@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import matplotlib
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 import sys,re
 import plib.cimissdata as cimissdata
 import matplotlib.pyplot as plt
@@ -28,7 +28,7 @@ def _job(now):
     x, y, z = cimissdata.get_jx_1h('TEM',timestr)  #修改函数参数type值'??'
     maxtem = max(z)
     mintem = min(z)
-    x, y, z = puntil.scala_net_grid(x, y, z, [50, 50], 'linear')
+    x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.read('config.txt')
     drawmap = DrawMap(levels=list(eval(config.get('Draw', 'TEM_LEVELS'))),
