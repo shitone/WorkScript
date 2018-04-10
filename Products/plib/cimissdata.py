@@ -67,68 +67,13 @@ def _get_cimiss_data_json(type, timestr):
     cf = ConfigParser.RawConfigParser(allow_no_value=True)
     cf.read( 'config.txt')
     baseUrl="http://" + cf.get('CIMISS', 'IP') + "/cimiss-web/api?userId=" + cf.get('CIMISS', 'User') + "&pwd=" + cf.get('CIMISS', 'PassWord')
-
-    if type=='PRE_1h':
+    scala_type=['TEM','TEM_Max','PRE_1h','TEM_Min','RHU','RHU_Min','PRS','PRS_Sea','PRS_Max','PRS_Min']
+    if type in scala_type:
         baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
                   "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,PRE_1h,Q_PRE_1h" \
+                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type + \
                   "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_PRE_1h:0,4"
-
-    elif type=='TEM':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,TEM" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_TEM:0,3,4"
-    elif type=='TEM_Max':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,TEM_Max" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_TEM_MAX:0,3,4"
-    elif type=='TEM_Min':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,TEM_Min" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_TEM_MIN:0,3,4"
-    elif type=='RHU':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,RHU" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_RHU:0,3,4"
-    elif type=='RHU_Min':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,RHU_Min" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_RHU:0,3,4"
-    elif type=='PRS':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,PRS" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_PRS:0,3,4"
-    elif type=='PRS_Sea':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,PRS_Sea" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_PRS_Sea:0,3,4"
-    elif type=='PRS_Max':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,PRS_Max" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_PRS_Max:0,3,4"
-    elif type=='PRS_Min':
-        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
-                  "&dataCode=SURF_CHN_MUL_HOR" \
-                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,PRS_Min" \
-                  "&times=" + timestr + "&adminCodes=360000" \
-                  "&eleValueRanges=Q_PRS_Min:0,3,4"
+                  "&eleValueRanges=Q_"+type+":0,3,4"
 
     baseUrl += "&dataFormat=json"
 
