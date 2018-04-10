@@ -28,16 +28,19 @@ def get_jx_multi_h(hrs, type1h, timestr, step=1):
     for stno in st_map:
         temp_v = st_map[stno]["value"]
         if 'NA' not in temp_v:
-            x.append(float(st_map[stno]["lontiude"]))
-            y.append(float(st_map[stno]["lattiude"]))
-            if 'PRE' in type1h:
-                z.append(sum(temp_v))
-            elif 'TEM' in type1h:
-                z.append(sum(temp_v)/hrs)
-            elif 'TEM_Max' in type1h:
-                z.append(max(temp_v))
-            elif 'TEM_Min' in type1h:
-                z.append(min(temp_v))
+            xx = float(st_map[stno]["lontiude"])
+            yy = float(st_map[stno]["lattiude"])
+            if xx not in x and yy not in y:
+                x.append(xx)
+                y.append(yy)
+                if 'PRE' in type1h:
+                    z.append(sum(temp_v))
+                elif 'TEM' in type1h:
+                    z.append(sum(temp_v)/hrs)
+                elif 'TEM_Max' in type1h:
+                    z.append(max(temp_v))
+                elif 'TEM_Min' in type1h:
+                    z.append(min(temp_v))
     return x, y, z
 
 
@@ -69,6 +72,7 @@ def _get_cimiss_data_json(type, timestr):
     cf.read( 'config.txt')
     baseUrl="http://" + cf.get('CIMISS', 'IP') + "/cimiss-web/api?userId=" + cf.get('CIMISS', 'User') + "&pwd=" + cf.get('CIMISS', 'PassWord')
     scala_type=['TEM','TEM_Max','PRE_1h','TEM_Min','RHU','RHU_Min','PRS','PRS_Sea','PRS_Max','PRS_Min']
+    vector_type = ['']
     if type in scala_type:
         baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
                   "&dataCode=SURF_CHN_MUL_HOR" \
