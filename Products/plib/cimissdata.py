@@ -4,7 +4,7 @@
 import urllib, json, ConfigParser, socket, datetime, os
 
 
-def get_jx_multi_h(hrs, type1h, timestr):
+def get_jx_multi_h(hrs, type1h, timestr, step=1):
     x=[]
     y=[]
     z=[]
@@ -20,7 +20,7 @@ def get_jx_multi_h(hrs, type1h, timestr):
         st_map[stno]["lattiude"] = float(st[stno]["lattiude"])
         st_map[stno]["value"] = value
     for hr in range(hrs):
-        ago = now - datetime.timedelta(hours=hr)
+        ago = now - datetime.timedelta(hours=hr*step)
         cdata = _get_cimiss_data_json(type1h, ago.strftime("%Y%m%d%H0000"))
         for row in cdata:
             if row["Station_Id_C"] in st_map:
@@ -39,6 +39,7 @@ def get_jx_multi_h(hrs, type1h, timestr):
             elif 'TEM_Min' in type1h:
                 z.append(min(temp_v))
     return x, y, z
+
 
 def get_jx_1h(type, timestr):
     x=[]

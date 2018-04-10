@@ -53,7 +53,7 @@ def _job(now):
 
     #日降水08-08 20-20
     if now.hour == 0 or now.hour == 12:
-        title1 = (bjnow - datetime.timedelta(hours=24)).strftime(u'江西省%H时') + bjnow.strftime(u'-%H时降水%m月%d日') + bjnow.strftime(u'%m月%d日')
+        title1 = (bjnow - datetime.timedelta(hours=24)).strftime(u'江西省%H时') + bjnow.strftime(u'-%H时降水%m月%d日')
         title2 = bjnow.strftime(u'%Y年%m月%d日%H时制作')
         fn = "SURF_PRE_" + (bjnow - datetime.timedelta(hours=24)).strftime("%H") + bjnow.strftime("%H") + "H_" + timestr + ".png"
         drawmap = DrawMap(levels=list(eval(config.get('Draw', 'PRE_24H_LEVELS'))),
