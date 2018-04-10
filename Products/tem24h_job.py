@@ -23,7 +23,7 @@ def _job(now):
     title1 = u'江西省日平均气温' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')
     title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
     fn = "SURF_TEM_24H_" + timestr + ".png"
-    x, y, z = cimissdata.get_jx_1h('TEM', timestr)
+    x, y, z = cimissdata.get_jx_multi_h(4,'TEM', timestr,6)
     maxpre = max(z)
     minpre = min(z)
     x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')
