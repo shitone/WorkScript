@@ -16,3 +16,8 @@
 17,32 * * * * /usr/local/miniconda/bin/python /opt/Products/prsmax_job.py /opt/Products
 17,32 * * * * /usr/local/miniconda/bin/python /opt/Products/prsmin_job.py /opt/Products
 17,32 * * * * /usr/local/miniconda/bin/python /opt/Products/prssea_job.py /opt/Products
+15,30 * * * * /usr/local/miniconda/bin/python /opt/Products/wind2min_job.py /opt/Products
+15,30 * * * * /usr/local/miniconda/bin/python /opt/Products/wind10min_job.py /opt/Products
+15,30 * * * * /usr/local/miniconda/bin/python /opt/Products/windinst_job.py /opt/Products
+15,30 * * * * /usr/local/miniconda/bin/python /opt/Products/windinstmax_job.py /opt/Products
+15,30 * * * * /usr/local/miniconda/bin/python /opt/Products/windmax_job.py /opt/Products

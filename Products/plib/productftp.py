@@ -23,32 +23,30 @@ class ProductFTP:
             return False
 
     def upload(self, upload_path, local_path, upload_file):
-        is_path_ready = False
         local_file = os.path.join(local_path, upload_file)
-        try:
-            self.ftp.cwd(upload_path)
-            is_path_ready = True
-        except:
+        upload_path_list = str.split(upload_path, '/')
+        for split_path in upload_path_list:
             try:
-                self.ftp.mkd(upload_path)
-                self.ftp.cwd(upload_path)
-                is_path_ready = True
+                self.ftp.cwd(split_path)
             except:
-                return False
-        if is_path_ready:
-            try:
-                if not os.path.isfile(local_file):
+                try:
+                    self.ftp.mkd(split_path)
+                    self.ftp.cwd(split_path)
+                except:
                     return False
-                with open(local_file, "rb") as f:
-                    try:
-                        self.ftp.delete(upload_file)
-                    except:
-                        pass
-                    self.ftp.storbinary('STOR %s.tmp'%upload_file, f, 4096)
-                    self.ftp.rename(upload_file+'.tmp', upload_file)
-                    return True
-            except:
+        try:
+            if not os.path.isfile(local_file):
                 return False
+            with open(local_file, "rb") as f:
+                try:
+                    self.ftp.delete(upload_file)
+                except:
+                    pass
+                self.ftp.storbinary('STOR %s.tmp'%upload_file, f, 4096)
+                self.ftp.rename(upload_file+'.tmp', upload_file)
+                return True
+        except:
+            return False
 
     def dis_connect(self):
         try:

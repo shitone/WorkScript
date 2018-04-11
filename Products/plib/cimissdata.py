@@ -4,6 +4,16 @@
 import urllib, json, ConfigParser, socket, datetime, os
 
 
+scala_type = ['TEM', 'TEM_Max', 'PRE_1h', 'TEM_Min', 'RHU', 'RHU_Min', 'PRS', 'PRS_Sea', 'PRS_Max', 'PRS_Min']
+vector_type = {
+    'WIN_Avg_2mi': ['WIN_S_Avg_2mi', 'WIN_D_Avg_2mi'],
+    'WIN_Avg_10mi': ['WIN_S_Avg_10mi', 'WIN_D_Avg_10mi'],
+    'WIND_Max': ['WIN_S_Max', 'WIN_D_S_Max'],
+    'WIN_Inst': ['WIN_S_INST', 'WIN_D_INST'],
+    'WIN_Inst_Max': ['WIN_S_Inst_Max', 'WIN_D_INST_Max']
+}
+
+
 def get_jx_multi_h(hrs, type1h, timestr, step=1):
     x=[]
     y=[]
@@ -45,9 +55,11 @@ def get_jx_multi_h(hrs, type1h, timestr, step=1):
 
 
 def get_jx_1h(type, timestr):
-    x=[]
-    y=[]
-    z=[]
+    x = []
+    y = []
+    z = []
+    angle = []
+    global scala_type, vector_type
     f = urllib.urlopen('http://10.116.32.88/stationinfo/index.php/Api/stationInfoJiangXi?type=json')
     stdata = f.read()
     st = json.loads(stdata)
@@ -61,9 +73,13 @@ def get_jx_1h(type, timestr):
             if xx not in x and yy not in y:
                 x.append(xx)
                 y.append(yy)
-                z.append(float(row[type]))
+                if type in scala_type:
+                    z.append(float(row[type]))
+                elif type in vector_type:
+                    z.append(float(row[vector_type[type][0]]))
+                    angle.append(float(row[vector_type[type][1]]))
 
-    return x, y, z
+    return x, y, z, angle
 
 
 def _get_cimiss_data_json(type, timestr):
@@ -71,15 +87,19 @@ def _get_cimiss_data_json(type, timestr):
     cf = ConfigParser.RawConfigParser(allow_no_value=True)
     cf.read( 'config.txt')
     baseUrl="http://" + cf.get('CIMISS', 'IP') + "/cimiss-web/api?userId=" + cf.get('CIMISS', 'User') + "&pwd=" + cf.get('CIMISS', 'PassWord')
-    scala_type=['TEM','TEM_Max','PRE_1h','TEM_Min','RHU','RHU_Min','PRS','PRS_Sea','PRS_Max','PRS_Min']
-    vector_type = ['']
+    global scala_type, vector_type
     if type in scala_type:
         baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
                   "&dataCode=SURF_CHN_MUL_HOR" \
                   "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type + \
                   "&times=" + timestr + "&adminCodes=360000" \
                   "&eleValueRanges=Q_"+type+":0,3,4"
-
+    elif type in vector_type:
+        baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
+                  "&dataCode=SURF_CHN_MUL_HOR" \
+                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ vector_type[type][0] + "," + vector_type[type][1] + \
+                  "&times=" + timestr + "&adminCodes=360000" \
+                  "&eleValueRanges=Q_" + vector_type[type][0] + ":0,3,4;Q_" + vector_type[type][1] + ":0,3,4"
     baseUrl += "&dataFormat=json"
 
     socket.setdefaulttimeout(20)
