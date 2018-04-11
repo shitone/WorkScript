@@ -23,7 +23,7 @@ def _job(now):
     title1 = u'江西省相对湿度' + bjnow.strftime(u'%m月%d日') + bjnow.strftime(u'%H时')
     title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
     fn = "SURF_RHU_1H_" + timestr + ".png"
-    x, y, z = cimissdata.get_jx_1h('RHU', timestr)
+    x, y, z, _ = cimissdata.get_jx_1h('RHU', timestr)
     maxpre = max(z)
     minpre = min(z)
     x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')

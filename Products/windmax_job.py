@@ -20,31 +20,46 @@ def _job(now):
     abspath = os.path.abspath('.')
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省最高气压' + bjnow.strftime(u'%m月%d日') + (bjnow-datetime.timedelta(hours=1)).strftime(u'%H时-') + bjnow.strftime(u'%H时')
+    title1 = u'江西省最大风速风向' + bjnow.strftime(u'%m月%d日') + (bjnow-datetime.timedelta(hours=1)).strftime(u'%H时-') + bjnow.strftime(u'%H时')
     title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
-    fn = "SURF_PRS_MAX_" + timestr + ".png"
-    x, y, z, _ = cimissdata.get_jx_1h('PRS_Max', timestr)
+    x, y, z, angle = cimissdata.get_jx_1h('WIND_Max', timestr)
     maxpre = max(z)
     minpre = min(z)
-    x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')
+    x, y, u, v = puntil.vector_net_grid(x, y, z, angle, [20, 20], 'nn', 'JX_Lat_Lon')
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.read(os.path.join(abspath, 'config.txt'))
     source_path = os.path.join(abspath, config.get('Path', 'SOURCE_PATH'))
     failed_path = os.path.join(abspath, config.get('Path', 'FAILED_PATH'))
-    drawmap = DrawMap(levels=list(eval(config.get('Draw', 'PRS_LEVELS'))),
-                    colors=list(eval(config.get('Draw', 'PRS_COLORS'))),
-                    cheight="25%",
-                    unit=config.get('Draw', 'PRS_UNIT'),
+    fn = "SURF_WIND_MAX_" + timestr + "_STREAM.png"
+    drawmap = DrawMap(levels=list(eval(config.get('Draw', 'WIND_LEVELS'))),
+                    colors=list(eval(config.get('Draw', 'WIND_COLORS'))),
+                    cheight="45%",
+                    unit=config.get('Draw', 'WIND_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
-                    statistics=[u"极大值："+ str(maxpre) +"hpa",
-                                u"极小值："+ str(minpre) + "hpa"],
-                    save_name=os.path.join(source_path, fn))
-    drawmap.draw_scala_map(x, y, z)
+                    statistics=[u"极大值："+ str(maxpre) +"m/s",
+                                u"极小值："+ str(minpre) + "m/s"],
+                    save_name=os.path.join(source_path, fn),
+                    vector_type='stream')
+    drawmap.draw_vector_map(x, y, u, v)
     is_success = False
     pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'), pwd=config.get('FTP', 'PassWord'))
     if pftp.connect():
-        if pftp.upload(upload_path='SURF/PRS/MAX/', local_path=source_path, upload_file=fn):
+        if pftp.upload(upload_path='SURF/WIND/MAX/', local_path=source_path, upload_file=fn):
+            is_success = True
+        pftp.dis_connect()
+    if is_success:
+        os.remove(os.path.join(source_path, fn))
+    else:
+        puntil.force_move_file(source_path, failed_path, fn)
+
+    fn = "SURF_WIND_MAX_" + timestr + "_BARB.png"
+    drawmap.save_name = os.path.join(source_path, fn)
+    drawmap.vector_type = 'barb'
+    drawmap.draw_vector_map(x, y, u, v)
+    is_success = False
+    if pftp.connect():
+        if pftp.upload(upload_path='SURF/WIND/MAX/', local_path=source_path, upload_file=fn):
             is_success = True
         pftp.dis_connect()
     if is_success:
@@ -61,5 +76,3 @@ if __name__ == '__main__' :
         elif os.path.isabs(sys.argv[1]):
             os.chdir(sys.argv[1])
     _job(now)
-
-
