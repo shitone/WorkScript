@@ -28,7 +28,7 @@ class DrawMap(object):
     'save_name': 产品文件保存路径，如"E:\\ex.png"或者"filepath\\ex.png".
     'vector_type': 矢量图的方向表示形式，"stream"表示用流场形式，"barb"表示用风羽形式.
     """
-    def __init__(self, levels, colors, cheight, unit, titles, statistics, save_name, vector_type):
+    def __init__(self, levels, colors, cheight, unit, titles, statistics, save_name, vector_type='stream'):
         self.levels = levels
         self.colors = colors
         self.cheight = cheight
