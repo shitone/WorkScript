@@ -4,7 +4,12 @@
 import urllib, json, ConfigParser, socket, datetime, os
 
 
-scala_type = ['TEM', 'TEM_Max', 'PRE_1h', 'TEM_Min', 'RHU', 'RHU_Min', 'PRS', 'PRS_Sea', 'PRS_Max', 'PRS_Min']
+scala_type = {'SURF':
+                  ['TEM', 'TEM_Max', 'PRE_1h', 'TEM_Min', 'RHU', 'RHU_Min', 'PRS', 'PRS_Sea', 'PRS_Max', 'PRS_Min',
+                   'GST','GST_MAX', 'GST_MIN', 'GST_5cm', 'GST_10cm', 'GST_15cm', 'GST_20cm', 'GST_40cm', 'GST_80cm', 'GST_160cm', 'GST_320cm'],
+              'AGME':
+                  []
+              }
 vector_type = {
     'WIN_Avg_2mi': ['WIN_S_Avg_2mi', 'WIN_D_Avg_2mi'],
     'WIN_Avg_10mi': ['WIN_S_Avg_10mi', 'WIN_D_Avg_10mi'],
@@ -73,7 +78,7 @@ def get_jx_1h(type, timestr):
             if xx not in x and yy not in y:
                 x.append(xx)
                 y.append(yy)
-                if type in scala_type:
+                if type in scala_type['SURF'] or type in scala_type['AGME']:
                     z.append(float(row[type]))
                 elif type in vector_type:
                     z.append(float(row[vector_type[type][0]]))
@@ -88,7 +93,7 @@ def _get_cimiss_data_json(type, timestr):
     cf.read( 'config.txt')
     baseUrl="http://" + cf.get('CIMISS', 'IP') + "/cimiss-web/api?userId=" + cf.get('CIMISS', 'User') + "&pwd=" + cf.get('CIMISS', 'PassWord')
     global scala_type, vector_type
-    if type in scala_type:
+    if type in scala_type['SURF']:
         baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
                   "&dataCode=SURF_CHN_MUL_HOR" \
                   "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type + \
@@ -106,8 +111,8 @@ def _get_cimiss_data_json(type, timestr):
     for i in range(3):
         req = urllib.urlopen(baseUrl)
         data = req.read()
-        data = data.replace(",fieldNames=", ",\"fieldNames\":");
-        data = data.replace(",fieldUnits=", ",\"fieldUnits\":");
+        data = data.replace(",fieldNames=", ",\"fieldNames\":")
+        data = data.replace(",fieldUnits=", ",\"fieldUnits\":")
         root = json.loads(data)
         if root['returnCode'] == str(0):
             data_json = root['DS']
