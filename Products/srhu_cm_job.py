@@ -64,7 +64,7 @@ if __name__ == '__main__' :
     for gst_type in type_list:
         try:
             _job(now, gst_type)
-        except :
-            print "error"
+        except Exception, e:
+            print e.message
 
 
