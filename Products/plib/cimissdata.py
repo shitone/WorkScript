@@ -6,7 +6,7 @@ import urllib, json, ConfigParser, socket, datetime, os
 
 scala_type = {'SURF':
                   ['TEM', 'TEM_Max', 'PRE_1h', 'TEM_Min', 'RHU', 'RHU_Min', 'PRS', 'PRS_Sea', 'PRS_Max', 'PRS_Min',
-                   'GST','GST_MAX', 'GST_MIN', 'GST_5cm', 'GST_10cm', 'GST_15cm', 'GST_20cm', 'GST_40cm', 'GST_80cm', 'GST_160cm', 'GST_320cm'],
+                   'GST','GST_Max', 'GST_Min', 'GST_5cm', 'GST_10cm', 'GST_15cm', 'GST_20cm', 'GST_40cm', 'GST_80cm', 'GST_160cm', 'GST_320cm'],
               'AGME':
                   ['SRHU_10','SRHU_20','SRHU_30','SRHU_40','SRHU_50','SRHU_60','SRHU_70','SRHU_80','SRHU_90','SRHU_100']
               }
@@ -78,7 +78,7 @@ def get_jx_1h(type, timestr):
             if xx not in x and yy not in y:
                 x.append(xx)
                 y.append(yy)
-                if type in scala_type['SURF'] :
+                if type in scala_type['SURF']:
                     z.append(float(row[type]))
                 elif type in scala_type['AGME']:
                     z.append(float(row[type.split('_')[0]]))

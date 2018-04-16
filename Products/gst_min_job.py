@@ -16,14 +16,14 @@ sys.setdefaultencoding('utf-8')
 plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
 
 
-def _job(now, gst_type):
+def _job(now):
     abspath = os.path.abspath('.')
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省' + gst_type  + u'地温' + bjnow.strftime(u'%m月%d日%H时')
+    title1 = u'江西省最低地面温度' + bjnow.strftime(u'%m月%d日%H时')
     title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
-    fn = "SURF_GST_" + gst_type.upper() + "_" + timestr + ".png"
-    x, y, z, _ = cimissdata.get_jx_1h('GST_' + gst_type, timestr)
+    fn = "SURF_GST_MIN_" + timestr + ".png"
+    x, y, z, _ = cimissdata.get_jx_1h('GST_Min', timestr)
     maxpre = max(z)
     minpre = min(z)
     x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')
@@ -44,7 +44,7 @@ def _job(now, gst_type):
     is_success = False
     pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'), pwd=config.get('FTP', 'PassWord'))
     if pftp.connect():
-        if pftp.upload(upload_path='SURF/GST/CM/', local_path=source_path, upload_file=fn):
+        if pftp.upload(upload_path='SURF/GST/MIN/', local_path=source_path, upload_file=fn):
             is_success = True
         pftp.dis_connect()
     if is_success:
@@ -60,11 +60,6 @@ if __name__ == '__main__' :
             now = datetime.datetime.strptime(sys.argv[1], '%Y%m%d%H0000')
         elif os.path.isabs(sys.argv[1]):
             os.chdir(sys.argv[1])
-    type_list = ['5cm', '10cm', '15cm', '20cm', '40cm', '80cm', '160cm', '320cm']
-    for gst_type in type_list:
-        try:
-            _job(now, gst_type)
-        except Exception, e:
-            print e.message
+    _job(now)
 
 
