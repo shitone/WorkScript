@@ -8,7 +8,7 @@ scala_type = {'SURF':
                   ['TEM', 'TEM_Max', 'PRE_1h', 'TEM_Min', 'RHU', 'RHU_Min', 'PRS', 'PRS_Sea', 'PRS_Max', 'PRS_Min',
                    'GST','GST_MAX', 'GST_MIN', 'GST_5cm', 'GST_10cm', 'GST_15cm', 'GST_20cm', 'GST_40cm', 'GST_80cm', 'GST_160cm', 'GST_320cm'],
               'AGME':
-                  []
+                  ['SRHU_10','SRHU_20','SRHU_30','SRHU_40','SRHU_50','SRHU_60','SRHU_70','SRHU_80','SRHU_90','SRHU_100']
               }
 vector_type = {
     'WIN_Avg_2mi': ['WIN_S_Avg_2mi', 'WIN_D_Avg_2mi'],
@@ -78,8 +78,10 @@ def get_jx_1h(type, timestr):
             if xx not in x and yy not in y:
                 x.append(xx)
                 y.append(yy)
-                if type in scala_type['SURF'] or type in scala_type['AGME']:
+                if type in scala_type['SURF'] :
                     z.append(float(row[type]))
+                elif type in scala_type['AGME']:
+                    z.append(float(row[type.split('_')[0]]))
                 elif type in vector_type:
                     z.append(float(row[vector_type[type][0]]))
                     angle.append(float(row[vector_type[type][1]]))
@@ -99,6 +101,12 @@ def _get_cimiss_data_json(type, timestr):
                   "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type + \
                   "&times=" + timestr + "&adminCodes=360000" \
                   "&eleValueRanges=Q_"+type+":0,3,4"
+    elif type in scala_type['AGME']:
+        baseUrl += "&interfaceId=getAgmeEleInRegionByTime" \
+                  "&dataCode=AGME_CHN_SOIL_HOR" \
+                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type[0:4] + \
+                  "&times=" + timestr + "&adminCodes=360000" \
+                  "&eleValueRanges=Soil_Depth_BelS:"+type[5:7] + ";"+type[0:4]+":[0,100]"
     elif type in vector_type:
         baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
                   "&dataCode=SURF_CHN_MUL_HOR" \
