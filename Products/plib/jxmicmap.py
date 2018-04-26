@@ -63,7 +63,7 @@ class DrawMap(object):
                            width="1.2%",
                            height=self.cheight,
                            loc=4,
-                           borderpad=5)
+                           borderpad=3.5)
 
         # orientation="horizontal"
         cbar = fig.colorbar(cs,cax=axins, ticks=self.levels[1:-1])
@@ -135,7 +135,7 @@ class DrawMap(object):
 
         #加信息中心LOGO
         jximg = mpimg.imread('jmic.png')
-        imagebox = OffsetImage(jximg, zoom=0.2)
+        imagebox = OffsetImage(jximg, zoom=0.7)
         anchored_image_box = AnchoredOffsetbox(loc=4,
                                          child=imagebox, pad=0.6,
                                          frameon=False,
@@ -203,7 +203,7 @@ class DrawMap(object):
         u = u[::5, ::5]
         v = v[::5, ::5]
         if self.vector_type == 'stream':
-            ax.streamplot(x, y, u, v, transform=ccrs.PlateCarree(), linewidth=0.8, density=1.5 , color='k')
+            ax.streamplot(x, y, u, v, transform=ccrs.PlateCarree(), linewidth=0.3, density=1.5 , color='k')
         elif self.vector_type == 'barb':
             ax.barbs(x, y, u, v, length=5, barb_increments=dict(half=2, full=4, flag=20),
                  sizes=dict(emptybarb=0.0), linewidth=0.5, transform=ccrs.PlateCarree())
@@ -218,7 +218,7 @@ class DrawMap(object):
                            width="1.2%",
                            height=self.cheight,
                            loc=4,
-                           borderpad=5)
+                           borderpad=3.5)
 
         # orientation="horizontal"
         cbar = fig.colorbar(cs,cax=axins, ticks=self.levels[1:-1])
@@ -313,7 +313,7 @@ class DrawMap(object):
 
         #加信息中心LOGO
         jximg = mpimg.imread('jmic.png')
-        imagebox = OffsetImage(jximg, zoom=0.2)
+        imagebox = OffsetImage(jximg, zoom=0.7)
         anchored_image_box = AnchoredOffsetbox(loc=4,
                                          child=imagebox, pad=0.6,
                                          frameon=False,
