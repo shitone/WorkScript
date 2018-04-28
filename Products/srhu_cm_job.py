@@ -22,7 +22,7 @@ def _job(now, gst_type):
     timestr = now.strftime("%Y%m%d%H0000")
     title1 = u'江西省' + gst_type  + u'cm土壤湿度' + bjnow.strftime(u'%m月%d日%H时')
     title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
-    fn = "AGME_SRHU_" + gst_type.upper() + "cm_" + timestr + ".png"
+    fn = "AGME_SOIL_SRHU_" + gst_type.upper() + "cm_" + timestr + ".png"
     x, y, z, _ = cimissdata.get_jx_1h('SRHU_' + gst_type, timestr)
     maxpre = max(z)
     minpre = min(z)
@@ -44,7 +44,7 @@ def _job(now, gst_type):
     is_success = False
     pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'), pwd=config.get('FTP', 'PassWord'))
     if pftp.connect():
-        if pftp.upload(upload_path='AGME/SRHU/CM/', local_path=source_path, upload_file=fn):
+        if pftp.upload(upload_path='AGME/', local_path=source_path, upload_file=fn):
             is_success = True
         pftp.dis_connect()
     if is_success:
