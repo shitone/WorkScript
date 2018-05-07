@@ -37,7 +37,6 @@ def _job(now):
 
 if __name__ == '__main__' :
     now = datetime.datetime.utcnow()
-    now = datetime.datetime.strptime('20180506000000', '%Y%m%d%H0000')
     if len(sys.argv) == 2:
         if re.match(r'^(\w{14})$', sys.argv[1]):
             now = datetime.datetime.strptime(sys.argv[1], '%Y%m%d%H0000')
