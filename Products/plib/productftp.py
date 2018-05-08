@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from ftplib import FTP
-import os
+import os, puntil
 
 
 class ProductFTP:
@@ -56,3 +56,14 @@ class ProductFTP:
                 self.ftp.close()
             except:
                 pass
+
+    def upload_or_failed(self, source_path, upload_path, failed_path, file_name):
+        is_success = False
+        if self.connect():
+            if self.upload(upload_path=upload_path, local_path=source_path, upload_file=file_name):
+                is_success = True
+            self.dis_connect()
+        if is_success:
+            os.remove(os.path.join(source_path, file_name))
+        else:
+            puntil.force_move_file(source_path, failed_path, file_name)

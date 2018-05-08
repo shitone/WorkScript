@@ -26,3 +26,4 @@
 15,30 * * * * /usr/local/miniconda/bin/python /opt/Products/gst_max_job.py /opt/Products
 15,30 * * * * /usr/local/miniconda/bin/python /opt/Products/gst_min_job.py /opt/Products
 16,30 * * * * /usr/local/miniconda/bin/python /opt/Products/srhu_cm_job.py /opt/Products
+45 * * * * /usr/local/miniconda/bin/python /opt/Products/korea_job.py /opt/Products

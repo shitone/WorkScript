@@ -5,6 +5,7 @@ from matplotlib.mlab import griddata
 import numpy as np
 from scipy.interpolate import griddata as scigird
 from math import radians, atan, sin, cos, tan, acos
+import urllib2
 
 def force_move_file(from_path, to_path, file_name):
     if not os.path.exists(os.path.join(from_path, file_name)):
@@ -212,7 +213,23 @@ def get_upload_path_from_file(file_name):
     return pathstr
 
 
+def download_from_url(url, save_path, file_name):
+    try:
+        u = urllib2.urlopen(url, timeout=10)
+        f = open(os.path.join(save_path, file_name), 'wb')
+        block_sz = 8192
+        while True:
+            buffer = u.read(block_sz)
+            if not buffer:
+                break
+            f.write(buffer)
+        f.close()
+        return True
+    except Exception,e:
+        return False
+
+
 
 
 if __name__=='__main__':
-    get_upload_path_from_file('SURF_PRE_1H_20180328020000.png')
+    download_from_url('http://web.kma.go.kr/repositary/image/cht/img/up85_2018050212.png', 'D:\PycharmProjects\WorkScript\Products\source', 'test.png')
