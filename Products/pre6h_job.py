@@ -20,7 +20,7 @@ def _job(now):
     abspath = os.path.abspath('.')
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省逐6小时降水' + bjnow.strftime(u'%m月%d日') + (bjnow-datetime.timedelta(hours=6)).strftime(u'%H时-') + bjnow.strftime(u'%H时')
+    title1 = u'江西省近6小时降水' + (bjnow-datetime.timedelta(hours=6)).strftime(u'%m月%d日%H时-') + bjnow.strftime(u'%m月%d日%H时')
     title2 = bjnow.strftime(u'%Y年%m月%d日%H时制作')
     fn = "SURF_PRE_6H_" + timestr + ".png"
     x, y, z = cimissdata.get_jx_multi_h(6, 'PRE_1h', timestr)

@@ -20,7 +20,7 @@ def _job(now):
     abspath = os.path.abspath('.')
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省瞬时风速风向' + bjnow.strftime(u'%m月%d日') + (bjnow-datetime.timedelta(hours=1)).strftime(u'%H时-') + bjnow.strftime(u'%H时')
+    title1 = u'江西省瞬时风速风向' + (bjnow-datetime.timedelta(hours=1)).strftime(u'%m月%d日%H时-') + bjnow.strftime(u'%m月%d日%H时')
     title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
     x, y, z, angle = cimissdata.get_jx_1h('WIN_Inst', timestr)
     maxpre = max(z)

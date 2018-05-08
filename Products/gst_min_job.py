@@ -37,8 +37,8 @@ def _job(now):
                     unit=config.get('Draw', 'GST_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
-                    statistics=[u"极大值："+ str(maxpre) +"°C",
-                                u"极小值："+ str(minpre) + "°C"],
+                    statistics=[u"最大值："+ str(maxpre) +"°C",
+                                u"最小值："+ str(minpre) + "°C"],
                     save_name=os.path.join(source_path, fn))
     drawmap.draw_scala_map(x, y, z)
     is_success = False

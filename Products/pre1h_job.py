@@ -20,7 +20,7 @@ def _job(now):
     abspath = os.path.abspath('.')
     bjnow = now + datetime.timedelta(hours=8)
     timestr = now.strftime("%Y%m%d%H0000")
-    title1 = u'江西省逐小时降水' + bjnow.strftime(u'%m月%d日') + (bjnow-datetime.timedelta(hours=1)).strftime(u'%H时-') + bjnow.strftime(u'%H时')
+    title1 = u'江西省逐小时降水' + (bjnow-datetime.timedelta(hours=1)).strftime(u'%m月%d日%H时-') + bjnow.strftime(u'%m月%d日%H时')
     title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
     fn = "SURF_PRE_1H_" + timestr + ".png"
     x, y, z, _ = cimissdata.get_jx_1h('PRE_1h', timestr)
@@ -37,8 +37,8 @@ def _job(now):
                     unit=config.get('Draw', 'PRE_1H_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
-                    statistics=[u"极大值："+ str(maxpre) +"mm",
-                                u"极小值："+ str(minpre) + "mm"],
+                    statistics=[u"最大值："+ str(maxpre) +"mm",
+                                u"最小值："+ str(minpre) + "mm"],
                     save_name=os.path.join(source_path, fn))
     drawmap.draw_scala_map(x, y, z)
     is_success = False
