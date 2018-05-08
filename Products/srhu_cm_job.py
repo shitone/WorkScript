@@ -44,7 +44,7 @@ def _job(now, gst_type):
     is_success = False
     pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'), pwd=config.get('FTP', 'PassWord'))
     if pftp.connect():
-        if pftp.upload(upload_path='AGME/', local_path=source_path, upload_file=fn):
+        if pftp.upload(upload_path='AGME/pp', local_path=source_path, upload_file=fn):
             is_success = True
         pftp.dis_connect()
     if is_success:
