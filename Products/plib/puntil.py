@@ -216,7 +216,7 @@ def get_upload_path_from_file(file_name):
 def download_from_url(url, save_path, file_name):
     try:
         u = urllib2.urlopen(url, timeout=10)
-        f = open(os.path.join(save_path, file_name), 'wb')
+        f = open(os.path.join(save_path, file_name+'.tmp'), 'wb')
         block_sz = 8192
         while True:
             buffer = u.read(block_sz)
@@ -224,6 +224,7 @@ def download_from_url(url, save_path, file_name):
                 break
             f.write(buffer)
         f.close()
+        os.rename(os.path.join(save_path, file_name+'.tmp'), os.path.join(save_path, file_name))
         return True
     except Exception,e:
         return False
@@ -232,4 +233,4 @@ def download_from_url(url, save_path, file_name):
 
 
 if __name__=='__main__':
-    download_from_url('http://web.kma.go.kr/repositary/image/cht/img/up85_2018050212.png', 'D:\PycharmProjects\WorkScript\Products\source', 'test.png')
+    download_from_url('http://web.kma.go.kr/repositary/image/cht/img/up85_2018060212.png', 'D:\PycharmProjects\WorkScript\Products\source', 'test.png')

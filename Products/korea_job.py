@@ -4,6 +4,7 @@
 from plib import puntil
 from plib.productftp import ProductFTP
 import datetime, os, ConfigParser, sys, re
+import sqlite3
 
 base_url = "http://web.kma.go.kr/repositary/image/cht/img/"
 korea_dic = {
@@ -29,14 +30,23 @@ def _job(now):
             config.read(os.path.join(abspath, 'config.txt'))
             source_path = os.path.join(abspath, config.get('Path', 'SOURCE_PATH'))
             failed_path = os.path.join(abspath, config.get('Path', 'FAILED_PATH'))
-            puntil.download_from_url(base_url+ori_fn, source_path, new_fn)
-            pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'),
-                              pwd=config.get('FTP', 'PassWord'))
-            pftp.upload_or_failed(source_path, puntil.get_upload_path_from_file(new_fn), failed_path, new_fn)
+            if puntil.download_from_url(base_url+ori_fn, source_path, new_fn):
+                pftp = ProductFTP(ip=config.get('FTP', 'IP'), port=config.getint('FTP', 'Port'), user=config.get('FTP', 'User'),
+                                  pwd=config.get('FTP', 'PassWord'))
+                pftp.upload_or_failed(source_path, puntil.get_upload_path_from_file(new_fn), failed_path, new_fn)
+            else:
+                conn = sqlite3.connect(os.path.join(abspath, 'failed.db'))
+                c = conn.cursor()
+                failstr = "insert into download (filename, url) values ('%s','%s')" % (new_fn, base_url+ori_fn)
+                c.execute(failstr)
+                conn.commit()
+                c.close()
+                conn.close()
 
 
 if __name__ == '__main__' :
     now = datetime.datetime.utcnow()
+    # now = datetime.datetime.strptime('20180621000000', '%Y%m%d%H0000')
     if len(sys.argv) == 2:
         if re.match(r'^(\w{14})$', sys.argv[1]):
             now = datetime.datetime.strptime(sys.argv[1], '%Y%m%d%H0000')

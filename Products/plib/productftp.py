@@ -67,3 +67,4 @@ class ProductFTP:
             os.remove(os.path.join(source_path, file_name))
         else:
             puntil.force_move_file(source_path, failed_path, file_name)
+        return is_success
