@@ -205,6 +205,12 @@ def vector_net_grid(x, y, z, angle,  g, interp, lat_lon):
 def get_upload_path_from_file(file_name):
     file_list = str.split(file_name, '_')
     pathstr = '~/'
+    if 'KOR' in file_list:
+        list_len = len(file_list)
+        file_list = file_list[0:list_len-2]
+        for child_path in file_list:
+            pathstr = pathstr + child_path + '/'
+        return pathstr
     for child_path in file_list:
         if re.search(r'(\d{14})', child_path):
             break
@@ -233,4 +239,5 @@ def download_from_url(url, save_path, file_name):
 
 
 if __name__=='__main__':
-    download_from_url('http://web.kma.go.kr/repositary/image/cht/img/up85_2018060212.png', 'D:\PycharmProjects\WorkScript\Products\source', 'test.png')
+    # download_from_url('http://web.kma.go.kr/repositary/image/cht/img/up85_2018060212.png', 'D:\PycharmProjects\WorkScript\Products\source', 'test.png')
+    print get_upload_path_from_file('NAFP_KOR_SURF_3H_20180522030000.png')
