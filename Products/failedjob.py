@@ -8,11 +8,15 @@ import ConfigParser
 
 
 def _failed_job():
+    abspath = os.path.abspath('.')
+    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config.read(os.path.join(abspath, 'config.txt'))
+    failed_path = os.path.join(abspath, config.get('Path', 'FAILED_PATH'))
     pftp = ProductFTP(ip="10.116.32.113", port=21, user="xxzxftp", pwd="123456", timeout=5)
     if pftp.connect():
-        for fn in os.listdir('failed'):
-            if (not fn.endswith('tmp')) and pftp.upload(upload_path=puntil.get_upload_path_from_file(fn), local_path='failed', upload_file=fn):
-                os.remove(os.path.join('failed', fn))
+        for fn in os.listdir(failed_path):
+            if (not fn.endswith('tmp')) and pftp.upload(upload_path=puntil.get_upload_path_from_file(fn), local_path=failed_path, upload_file=fn):
+                os.remove(os.path.join(failed_path, fn))
         pftp.dis_connect()
 
 
@@ -23,7 +27,8 @@ def _failed_download():
     conn = sqlite3.connect(os.path.join(abspath, 'failed.db'))
     c = conn.cursor()
     failstr = "select * from download"
-    rows = c.execute(failstr)
+    c.execute(failstr)
+    rows = c.fetchall()
     for row in rows:
         new_fn = row[0]
         url = row[1]

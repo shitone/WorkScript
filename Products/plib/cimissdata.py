@@ -101,6 +101,7 @@ def _get_cimiss_data_json(type, timestr):
                   "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type + \
                   "&times=" + timestr + "&adminCodes=360000" \
                   "&eleValueRanges=Q_"+type+":0,3,4"
+        baseUrl += _add_value_range(type)
     elif type in scala_type['AGME']:
         baseUrl += "&interfaceId=getAgmeEleInRegionByTime" \
                   "&dataCode=AGME_CHN_SOIL_HOR" \
@@ -127,6 +128,16 @@ def _get_cimiss_data_json(type, timestr):
         if len(data_json) > 0:
             break
     return data_json
+
+
+def _add_value_range(type):
+    new_url = ""
+    if 'RHU' in type:
+        new_url = ";" + type + ":(0,100]"
+    else:
+        pass
+    return new_url
+
 
 if __name__ == '__main__' :
     x, y, z = get_jx_1h('PRE_1h', '20120101000000')
