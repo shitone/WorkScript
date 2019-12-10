@@ -134,6 +134,10 @@ def _add_value_range(type):
     new_url = ""
     if 'RHU' in type:
         new_url = ";" + type + ":(0,100]"
+    elif ('TEM' in type) or ('GST' in type):
+        new_url = ";" + type + ":(-273,990000)"
+    elif ('PRE' in type) or ('PRS' in type):
+        new_url = ";" + type + ":[0,990000)"
     else:
         pass
     return new_url
