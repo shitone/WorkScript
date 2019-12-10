@@ -33,7 +33,7 @@ def _job(now, gst_type):
     failed_path = os.path.join(abspath, config.get('Path', 'FAILED_PATH'))
     drawmap = DrawMap(levels=list(eval(config.get('Draw', 'GST_LEVELS'))),
                     colors=list(eval(config.get('Draw', 'GST_COLORS'))),
-                    cheight="45%",
+                    cheight="50%",
                     unit=config.get('Draw', 'GST_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
