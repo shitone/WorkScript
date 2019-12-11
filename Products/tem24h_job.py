@@ -25,8 +25,8 @@ def _job(now):
         title2 = u'' + bjnow.strftime(u'%Y年%m月%d日%H时制作')
         fn = "SURF_TEM_24H_" + timestr + ".png"
         x, y, z = cimissdata.get_jx_multi_h(4,'TEM', timestr,6)
-        maxpre = max(z)
-        minpre = min(z)
+        maxtem = float('%.1f' % max(z))
+        mintem = float('%.1f' % min(z))
         x, y, z = puntil.scala_net_grid(x, y, z, [20, 20], 'nn', 'JX_Lat_Lon')
         config = ConfigParser.RawConfigParser(allow_no_value=True)
         config.read(os.path.join(abspath, 'config.txt'))
@@ -38,8 +38,8 @@ def _job(now):
                         unit=config.get('Draw', 'TEM_UNIT'),
                         titles=[{"title":title1, "loc":u"left"},
                                 {"title":title2, "loc":u"right"}],
-                        statistics=[u"极大值："+ str(maxpre) +"°C",
-                                    u"极小值："+ str(minpre) + "°C"],
+                        statistics=[u"极大值："+ str(maxtem) +"°C",
+                                    u"极小值："+ str(mintem) + "°C"],
                         save_name=os.path.join(source_path, fn))
         drawmap.draw_scala_map(x, y, z)
         is_success = False
