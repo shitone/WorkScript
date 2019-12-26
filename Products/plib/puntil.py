@@ -7,6 +7,7 @@ from scipy.interpolate import griddata as scigird
 from math import radians, atan, sin, cos, tan, acos
 import urllib2
 
+
 def force_move_file(from_path, to_path, file_name):
     if not os.path.exists(os.path.join(from_path, file_name)):
         return False
@@ -155,7 +156,6 @@ def vector_net_grid(x, y, z, angle,  g, interp, lat_lon):
 
 
 # def scala_net_grid(x, y, z, g, interp, lat_lon):
-#
 #     pts = []
 #     for pt in zip(x, y):
 #         pts.append(list(pt))
@@ -174,20 +174,20 @@ def vector_net_grid(x, y, z, angle,  g, interp, lat_lon):
 #     yi = np.linspace(minLat,maxLat,ngridy)
 #     for yy in yi:
 #         xx = xi[0]
-#         zz = get_nearest_value(x, y, z, xx, yy)
+#         zz = scala_nearest_value(x, y, z, xx, yy)
 #         pts.append([xx, yy])
 #         z.append(zz)
 #         xx = xi[-1]
-#         zz = get_nearest_value(x, y, z, xx, yy)
+#         zz = scala_nearest_value(x, y, z, xx, yy)
 #         pts.append([xx, yy])
 #         z.append(zz)
 #     for xx in xi:
 #         yy = yi[0]
-#         zz = get_nearest_value(x, y, z, xx, yy)
+#         zz = scala_nearest_value(x, y, z, xx, yy)
 #         pts.append([xx, yy])
 #         z.append(zz)
 #         yy = yi[-1]
-#         zz = get_nearest_value(x, y, z, xx, yy)
+#         zz = scala_nearest_value(x, y, z, xx, yy)
 #         pts.append([xx, yy])
 #         z.append(zz)
 #     pts = np.array(pts)
@@ -195,10 +195,7 @@ def vector_net_grid(x, y, z, angle,  g, interp, lat_lon):
 #     ngridx = complex(0, diffLon*g[0])
 #     ngridy = complex(0, diffLat*g[1])
 #     xi, yi = np.mgrid[minLon:maxLon:ngridx, minLat:maxLat:ngridy]
-#     # xi, yi = np.meshgrid(xi, yi)
-#     zi = scigird(pts, z, (xi, yi), method='nearest')
-#     # rbf = Rbf(x, y, z, epsilon=2)
-#     # zi = rbf(xi, yi)
+#     zi = scigird(pts, z, (xi, yi), method='linear')
 #     return xi, yi, zi
 
 
@@ -234,8 +231,6 @@ def download_from_url(url, save_path, file_name):
         return True
     except Exception,e:
         return False
-
-
 
 
 if __name__=='__main__':

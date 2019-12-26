@@ -45,7 +45,7 @@ def get_jx_multi_h(hrs, type1h, timestr, step=1):
         if 'NA' not in temp_v:
             xx = float(st_map[stno]["lontiude"])
             yy = float(st_map[stno]["lattiude"])
-            if xx not in x and yy not in y:
+            if xx not in x and yy not in y and xx >= 113.5 and xx <= 118.5 and yy >= 24.4 and yy <= 30.1:
                 x.append(xx)
                 y.append(yy)
                 if 'PRE' in type1h:
@@ -75,7 +75,7 @@ def get_jx_1h(type, timestr):
         if stno in st:
             xx = float(st[stno]["lontiude"])
             yy = float(st[stno]["lattiude"])
-            if xx not in x and yy not in y:
+            if xx not in x and yy not in y and xx >= 113.5 and xx <= 118.5 and yy >= 24.4 and yy <= 30.1:
                 x.append(xx)
                 y.append(yy)
                 if type in scala_type['SURF']:
