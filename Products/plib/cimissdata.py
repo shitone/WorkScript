@@ -8,7 +8,9 @@ scala_type = {'SURF':
                   ['TEM', 'TEM_Max', 'PRE_1h', 'TEM_Min', 'RHU', 'RHU_Min', 'PRS', 'PRS_Sea', 'PRS_Max', 'PRS_Min', 'VIS_HOR_10MI',
                    'GST','GST_Max', 'GST_Min', 'GST_5cm', 'GST_10cm', 'GST_15cm', 'GST_20cm', 'GST_40cm', 'GST_80cm', 'GST_160cm', 'GST_320cm'],
               'AGME':
-                  ['SRHU_10','SRHU_20','SRHU_30','SRHU_40','SRHU_50','SRHU_60','SRHU_70','SRHU_80','SRHU_90','SRHU_100']
+                  ['SRHU_10','SRHU_20','SRHU_30','SRHU_40','SRHU_50','SRHU_60','SRHU_70','SRHU_80','SRHU_90','SRHU_100'],
+              'UPAR':
+                  ['PRE_PRE_Fore',]
               }
 vector_type = {
     'WIN_Avg_2mi': ['WIN_S_Avg_2mi', 'WIN_D_Avg_2mi'],
@@ -78,7 +80,7 @@ def get_jx_1h(type, timestr):
             if xx not in x and yy not in y and xx >= 113.5 and xx <= 118.5 and yy >= 24.4 and yy <= 30.1:
                 x.append(xx)
                 y.append(yy)
-                if type in scala_type['SURF']:
+                if type in scala_type['SURF'] or type in scala_type['UPAR']:
                     z.append(float(row[type]))
                 elif type in scala_type['AGME']:
                     z.append(float(row[type.split('_')[0]]))
@@ -108,6 +110,12 @@ def _get_cimiss_data_json(type, timestr):
                   "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type[0:4] + \
                   "&times=" + timestr + "&adminCodes=360000" \
                   "&eleValueRanges=Soil_Depth_BelS:"+type[5:7] + ";"+type[0:4]+":[0,100]"
+    elif type in scala_type['UPAR']:
+        baseUrl += "&interfaceId=getUparEleInRegionByTimeRange" \
+                  "&dataCode=UPAR_CHN_GPSMET_MUL" \
+                  "&elements=Station_Id_C,Lon,Lat,Year,Mon,Day,Hour,"+ type + \
+                  "&timeRange=[" + timestr + "," + timestr + "]&adminCodes=360000" \
+                  "&eleValueRanges=" + type + ":[0,1000]"
     elif type in vector_type:
         baseUrl += "&interfaceId=getSurfEleInRegionByTime" \
                   "&dataCode=SURF_CHN_MUL_HOR" \
