@@ -37,8 +37,7 @@ def _job(now):
                     unit=config.get('Draw', 'WIND_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
-                    statistics=[u"极大值："+ str(maxpre) +"m/s",
-                                u"极小值："+ str(minpre) + "m/s"],
+                    statistics=[],
                     save_name=os.path.join(source_path, fn),
                     vector_type='stream')
     drawmap.draw_vector_map(x, y, u, v)

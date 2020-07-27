@@ -37,8 +37,7 @@ def _job(now):
                     unit=config.get('Draw', 'PRS_UNIT'),
                     titles=[{"title":title1, "loc":u"left"},
                             {"title":title2, "loc":u"right"}],
-                    statistics=[u"极大值："+ str(maxpre) +"hpa",
-                                u"极小值："+ str(minpre) + "hpa"],
+                    statistics=[],
                     save_name=os.path.join(source_path, fn))
     drawmap.draw_scala_map(x, y, z)
     is_success = False
